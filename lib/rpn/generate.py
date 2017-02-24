@@ -102,7 +102,10 @@ def imdb_proposals(net, imdb):
     _t = Timer()
     imdb_boxes = [[] for _ in xrange(imdb.num_images)]
     for i in xrange(imdb.num_images):
-        im = cv2.imread(imdb.image_path_at(i))
+        #im = cv2.imread(imdb.image_path_at(i))
+        im = np.load(imdb.image_path_at(i))
+        im = np.swapaxes(im, 0, 2)
+        im = np.swapaxes(im, 0, 1)
         _t.tic()
         imdb_boxes[i], scores = im_proposals(net, im)
         _t.toc()

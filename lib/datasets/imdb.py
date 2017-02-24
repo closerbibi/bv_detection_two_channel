@@ -12,6 +12,8 @@ from utils.cython_bbox import bbox_overlaps
 import numpy as np
 import scipy.sparse
 from fast_rcnn.config import cfg
+import scipy.io as sio
+import pdb
 
 class imdb(object):
     """Image database."""
@@ -96,7 +98,11 @@ class imdb(object):
         raise NotImplementedError
 
     def _get_widths(self):
-      return [PIL.Image.open(self.image_path_at(i)).size[0]
+      #return [PIL.Image.open(self.image_path_at(i)).size[0]
+      #        for i in xrange(self.num_images)]
+      #return [sio.loadmat(self.image_path_at(i))['grid'].shape[1]
+      #        for i in xrange(self.num_images)]
+      return [np.load(self.image_path_at(i)).shape[2]
               for i in xrange(self.num_images)]
 
     def append_flipped_images(self):
@@ -104,11 +110,14 @@ class imdb(object):
         widths = self._get_widths()
         for i in xrange(num_images):
             boxes = self.roidb[i]['boxes'].copy()
-            oldx1 = boxes[:, 0].copy()
-            oldx2 = boxes[:, 2].copy()
-            boxes[:, 0] = widths[i] - oldx2 - 1
-            boxes[:, 2] = widths[i] - oldx1 - 1
-            assert (boxes[:, 2] >= boxes[:, 0]).all()
+            oldx1 = boxes[:, 0].copy() # 0: xmin
+            oldx2 = boxes[:, 2].copy() # 2: xmax
+            boxes[:, 0] = widths[i] - oldx2 - 1 # width - max: suppose to be small
+            boxes[:, 2] = widths[i] - oldx1 - 1 # width - min: supposed to be big
+            try:
+                assert (boxes[:, 2] >= boxes[:, 0]).all()
+            except:
+                pdb.set_trace()
             entry = {'boxes' : boxes,
                      'gt_overlaps' : self.roidb[i]['gt_overlaps'],
                      'gt_classes' : self.roidb[i]['gt_classes'],

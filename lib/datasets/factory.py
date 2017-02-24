@@ -9,9 +9,18 @@
 
 __sets = {}
 
+import datasets
+import datasets.inria
 from datasets.pascal_voc import pascal_voc
 from datasets.coco import coco
 import numpy as np
+
+# set own datasets
+inria_devkit_path = './'
+for split in ['train', 'test']:
+    name = '{}_{}'.format('inria', split)
+    __sets[name] = (lambda split=split: datasets.inria.inria(split, inria_devkit_path))
+
 
 # Set up voc_<year>_<split> using selective search "fast" mode
 for year in ['2007', '2012']:
