@@ -12,7 +12,8 @@ while ~feof(fid)
    bboxes(count,1:4) = [str2double(pred_info{3}), str2double(pred_info{4}),...
        str2double(pred_info{5}), str2double(pred_info{6})];
    confidences(count,1) = str2double(pred_info{2});
-   image_ids(count,1) = str2double(strrep(pred_info{1},'picture_',''));
+   C = strsplit(strrep(pred_info{1},'picture_',''),'_');
+   image_ids(count,1) = str2double(C{1});
    count = count +1;
 end
 

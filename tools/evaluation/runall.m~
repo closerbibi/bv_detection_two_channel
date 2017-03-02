@@ -4,7 +4,7 @@ for kkk = 1%:5
     % test
     %fpath = sprintf('../../results/test/comp4-27463_det_test_%s.txt',target_class);
     % train
-    fpath = sprintf('../../results/train/comp4-10143_det_train_%s.txt',target_class);
+    fpath = sprintf('../../results/train/comp4-30047_det_train_%s.txt',target_class);
     label_parent_dir = '../../data/DIRE/Annotations';
     gt_file_list = dir(label_parent_dir);
     
@@ -35,11 +35,11 @@ for kkk = 1%:5
 %         all_box_num = all_box_num + length(tp);
 %         all_gt_box_num = all_gt_box_num + obj_count;
         
-        con_idx=find(confidences(ids,:)>0.0);
+        con_idx=find(confidences(ids,:)>02);
         if ~isempty(tp)
-            all_tp = [all_tp;tp(con_idx)];
-            all_fp = [all_fp;fp(con_idx)];
-            all_box_num = all_box_num + length(tp(con_idx));
+            all_tp = all_tp + sum(tp);%(con_idx));
+            all_fp = all_fp + sum(fp);%(con_idx));
+            all_box_num = all_box_num + length(tp);%(con_idx));
             all_gt_box_num = all_gt_box_num + obj_count;
         end
     end
