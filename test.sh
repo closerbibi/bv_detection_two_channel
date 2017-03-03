@@ -14,4 +14,4 @@
     --net output/faster_rcnn_end2end/train/vgg16_faster_rcnn_iter_124000.caffemodel \
     --imdb inria_train \
     --cfg experiments/cfgs/faster_rcnn_end2end.yml \
-    2>&1 | tee logfile/test_124000.log
+    #2>&1 | tee logfile/test_124000.log

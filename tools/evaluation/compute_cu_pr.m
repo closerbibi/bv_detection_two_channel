@@ -1,4 +1,10 @@
-function [prec, rec, ap, cum_tp, cum_fp]=compute_cu_pr(tp,fp,npos)
+function [prec, rec, ap, cum_tp, cum_fp]=compute_cu_pr(tp,fp,npos,confidences)
+
+% sorting according to confidence
+[sc,si]=sort(-confidences);
+tp= tp(si);
+fp= fp(si);
+
 % compute cumulative precision/recall
 cum_fp=cumsum(fp);
 cum_tp=cumsum(tp);

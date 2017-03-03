@@ -24,7 +24,7 @@ for kkk = 1%:5
     %%
     unique_image = unique(image_ids);
 
-    all_tp=0; all_fp=0; all_box_num = 0; all_gt_box_num =0;
+    all_tp=[]; all_fp=[]; all_box_num = 0; all_gt_box_num =0;
     for i = 1:length(unique_image)
         ids = find(image_ids==unique_image(i));
         label_path = fullfile(label_parent_dir,sprintf('picture_%06d.txt',unique_image(i)));
@@ -36,15 +36,15 @@ for kkk = 1%:5
 %         all_gt_box_num = all_gt_box_num + obj_count;
         
         con_idx=find(confidences(ids,:)>0.0);
-        if ~isempty(tp)
+%         if ~isempty(tp)
             all_tp = [all_tp;tp(con_idx)];
             all_fp = [all_fp;fp(con_idx)];
             all_box_num = all_box_num + length(tp(con_idx));
             all_gt_box_num = all_gt_box_num + obj_count;
-        end
+%         end
     end
     
-    [prec, rec, ap, cum_tp, cum_fp]=compute_cu_pr(tp,fp,all_gt_box_num);
+    [prec, rec, ap, cum_tp, cum_fp]=compute_cu_pr(all_tp,all_fp,all_gt_box_num,confidences);
     draw(prec, rec, ap, cum_fp)
     
     
